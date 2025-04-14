@@ -17,3 +17,5 @@ build/
 # 로그
 *.log
 
+*.swp
+
