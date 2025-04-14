@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Node.js
+node_modules/
+
+# 환경 설정 파일
+.env
+
+# 빌드 파일
+dist/
+build/
+
+# VSCode 설정 (개인 설정이므로 공유 안 함)
+.vscode/
+
+# 로그
+*.log
+
