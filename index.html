@@ -89,12 +89,12 @@
   <section id="inquiry" class="section">
     <div class="container">
       <h2>견적 문의</h2>
-      <form action="mailto:araonesoft@gmail.com" method="POST" enctype="text/plain" autocomplete="off">
-          <input type="text" name="업체명" placeholder="귀사의 업체명을 입력하세요" required><br>
-          <input type="text" name="담당자명" placeholder="담당자명을 입력하세요" required><br>
-          <input type="tel" name="전화번호" placeholder="연락받으실 전화번호를 입력하세요" required><br>
-          <textarea name="문의내용" rows="5" placeholder="문의하실 내용을 적어주세요." required></textarea><br>
-
+      <form id="inquiryForm" autocomplete="off">
+        <input type="text" id="company" placeholder="귀사의 업체명을 입력하세요" required><br>
+        <input type="text" id="name" placeholder="담당자명을 입력하세요" required><br>
+        <input type="tel" id="phone" placeholder="연락받으실 전화번호 (안넣으셔도 됩니다)"><br>
+        <textarea id="message" rows="5" placeholder="문의하실 내용을 적어주세요 (조합원수를 같이 알려주세요)" required></textarea><br>
+  
         <div class="submit-wrap">
           <button type="submit" class="submit_btn">문의 메일 보내기</button>
         </div>
@@ -134,10 +134,30 @@
       </p>
     </div>
   </footer>
-  <!-- 스크립트 추가 위치 -->
+  
   <script>
+    // 문의하기 버튼 누르면 Loading 커서를 보여줌
     document.querySelector('.submit_btn').addEventListener('click', function() {
       this.classList.add('loading');
+    });
+    // Form에서 하면 한글이 깨져서 이렇게 스크립트로 함.
+    document.getElementById('inquiryForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const company = encodeURIComponent(document.getElementById('company').value);
+      const name = encodeURIComponent(document.getElementById('name').value);
+      const phoneRaw = document.getElementById('phone').value;
+      const phone = phoneRaw ? encodeURIComponent(phoneRaw) : null;
+      const message = encodeURIComponent(document.getElementById('message').value);
+
+      let body = `업체명: ${company}%0D%0A담당자명: ${name}`;
+      if (phone) {
+        body += `%0D%0A전화번호: ${phone}`;
+      }
+      body += `%0D%0A문의내용: ${message}`;
+
+      const mailtoLink = `mailto:araonesoft@gmail.com?subject=OMR문의사항&body=${body}`;
+      window.location.href = mailtoLink;
     });
   </script>
 
