@@ -90,19 +90,19 @@
   
   <section id="inquiry" class="section">
     <div class="container">
-      <h2>견적 문의</h2>
-      <form id="inquiryForm" autocomplete="off">
-        <input type="text" id="company" placeholder="귀사의 업체명을 입력하세요" required><br>
-        <input type="text" id="name" placeholder="담당자명을 입력하세요" required><br>
-        <input type="tel" id="phone" placeholder="연락받으실 전화번호 (안넣으셔도 됩니다)"><br>
-        <textarea id="message" rows="5" placeholder="문의하실 내용을 적어주세요 (조합원수를 같이 알려주세요)" required></textarea><br>
-  
+      <h2>견적 문의 구글</h2>
+      <form id="inquiryForm" action="https://script.google.com/macros/s/AKfycbxr64H2cAKWdu891r8619ybL0mGARpxH4jZRsVwmibbSVi7zt_b8uETwK0FPSD5D03nxA/exec" method="POST" autocomplete="off">
+        <input type="text" id="company" name="company" placeholder="귀사의 업체명을 입력하세요" required><br>
+        <input type="text" id="name" name="name" placeholder="담당자명을 입력하세요" required><br>
+        <input type="text" id="phone" name="phone" placeholder="연락받으실 전화번호나 이메일주소를 입력하세요" required><br>
+        <textarea id="message" name="message" rows="5" placeholder="문의하실 내용을 적어주세요 (조합원수를 같이 알려주세요)" required></textarea><br>
+    
         <div class="submit-wrap">
-          <button type="submit" class="submit_btn">문의 메일 보내기</button>
+          <button type="submit" class="submit_btn">메일 보내기</button>
         </div>
       </form>
     </div>
-  </section>
+  </section>  
 
   <section id="choose" class="section light">
     <div class="container">
@@ -138,29 +138,40 @@
   </footer>
   
   <script>
-    // 문의하기 버튼 누르면 Loading 커서를 보여줌
-    document.querySelector('.submit_btn').addEventListener('click', function() {
-      this.classList.add('loading');
-    });
-    // Form에서 하면 한글이 깨져서 이렇게 스크립트로 함.
     document.getElementById('inquiryForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
-      const company = encodeURIComponent(document.getElementById('company').value);
-      const name = encodeURIComponent(document.getElementById('name').value);
-      const phoneRaw = document.getElementById('phone').value;
-      const phone = phoneRaw ? encodeURIComponent(phoneRaw) : null;
-      const message = encodeURIComponent(document.getElementById('message').value);
+      // 폼 데이터를 FormData로 처리
+      const formData = new FormData(this);
 
-      let body = `업체명: ${company}%0D%0A담당자명: ${name}`;
-      if (phone) {
-        body += `%0D%0A전화번호: ${phone}`;
-      }
-      body += `%0D%0A문의내용: ${message}`;
+      // 요청 중에 로딩 커서 표시
+      document.body.style.cursor = 'wait';
 
-      const mailtoLink = `mailto:araonesoft@gmail.com?subject=OMR문의사항&body=${body}`;
-      window.location.href = mailtoLink;
+      // 폼을 서버로 POST 요청
+      fetch(this.action, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(result => {
+        // 메일 전송 후 팝업 메시지
+        alert('메일이 전송되었습니다.');
+        
+        // 폼 리셋
+        document.getElementById('inquiryForm').reset();
+
+        // 요청이 끝나면 정상 커서로 복원
+        document.body.style.cursor = 'default';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('메일 전송에 실패했습니다.');
+
+        // 요청이 끝나면 정상 커서로 복원
+        document.body.style.cursor = 'default';
+      });
     });
+
   </script>
 
 </body>
