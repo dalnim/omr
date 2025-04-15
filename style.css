@@ -143,6 +143,7 @@ body {
   border-radius: 6px;
 }
 
+/* PC: 수동 번호 숨기고 자동 번호 표시 */
 .procedure-list li::before {
   counter-increment: step;
   content: counter(step, decimal-leading-zero) ".";
@@ -152,6 +153,22 @@ body {
   font-weight: bold;
   color: #0077cc;
 }
+
+.manual-number {
+  display: none;  /* PC에서는 수동 번호 숨김 */
+}
+
+/* 모바일: 자동 번호 숨기고 수동 번호 표시 */
+@media (max-width: 480px) {
+  .procedure-list li::before {
+    display: none;
+  }
+
+  .manual-number {
+    display: inline;
+  }
+}
+
 
 /* 특징 */
 .features {
@@ -188,6 +205,7 @@ textarea {
   font-size: 1rem;
   margin-top: 30px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .submit_btn {
