@@ -129,13 +129,13 @@ body {
 /* 진행 절차 */
 .procedure-list {
   list-style: none;
-  padding-left: 0;
-  counter-reset: step;
+  padding-left: 2rem;
+  counter-reset: step; /* 전체 목록에서 한 번만 초기화 */
 }
 
 .procedure-list li {
   background-color: #fff;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1.5rem 1rem 3rem;
   margin-bottom: 1rem;
   border-left: 4px solid #0077cc;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -143,12 +143,13 @@ body {
   border-radius: 6px;
 }
 
-/* PC: 수동 번호 숨기고 자동 번호 표시 */
+/* PC: 자동 번호 매기기 */
 .procedure-list li::before {
-  counter-increment: step;
-  content: counter(step, decimal-leading-zero) ".";
+  counter-increment: step; /* 각 li 항목에서 번호 증가 */
+  content: counter(step, decimal-leading-zero) "."; /* 번호 형식 */
   position: absolute;
-  left: -2.5rem;
+
+  left: -3rem; /* 왼쪽 번호 위치 조정 */
   top: 1rem;
   font-weight: bold;
   color: #0077cc;
@@ -167,7 +168,12 @@ body {
   .manual-number {
     display: inline;
   }
+
+  .procedure-list li {
+    padding-left: 1.5rem; /* 모바일에서 여백 줄이기 */
+  }
 }
+
 
 
 /* 특징 */
